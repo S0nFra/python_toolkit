@@ -61,6 +61,44 @@ def load_obj(filename):
         obj = pickle.load(file)
     return obj
 
+class PrettyPrint:
+    """
+    Helper class for terminal output styling.
+    """
+    # Text colors
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    WHITE = '\033[97m'
+    YELLOW = '\033[93m'
+    MAGENTA = '\033[95m'
+    GREY = '\033[90m'
+    BLACK = '\033[90m'
+
+    # Text styles
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    RESET = '\033[0m'
+
+    @staticmethod
+    def apply_styles(*styles):
+        """Combines multiple styles into a single string."""
+        return ''.join(styles)
+
+    @staticmethod
+    def pprint(msg: str, color: str = CYAN, *styles: str):
+        """
+        Pretty prints the message with specified color and styles.
+
+        Args:
+            msg (str): Message to print.
+            color (str, optional): Color for the text. Defaults to CYAN.
+            styles (str): Additional text styles (e.g., PrettyPrint.BOLD, PrettyPrint.UNDERLINE).
+        """
+        styled_msg = PrettyPrint.apply_styles(color, *styles)
+        print(styled_msg + msg + PrettyPrint.RESET)
+
 ########################
 ##  BINARY OPERATIONS ##
 ########################
