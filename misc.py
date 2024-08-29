@@ -82,22 +82,17 @@ class PrettyPrint:
     RESET = '\033[0m'
 
     @staticmethod
-    def apply_styles(*styles):
-        """Combines multiple styles into a single string."""
-        return ''.join(styles)
-
-    @staticmethod
-    def pprint(msg: str, color: str = CYAN, *styles: str):
+    def print(msg: str, color: str = CYAN, *styles: str):
         """
-        Pretty prints the message with specified color and styles.
+        Pretty print a message with specified color and styles.
 
         Args:
-            msg (str): Message to print.
-            color (str, optional): Color for the text. Defaults to CYAN.
-            styles (str): Additional text styles (e.g., PrettyPrint.BOLD, PrettyPrint.UNDERLINE).
+            msg: The message to print.
+            color: The color for the text.
+            *styles: Additional text styles (e.g., PrettyPrint.BOLD, PrettyPrint.UNDERLINE).
         """
-        styled_msg = PrettyPrint.apply_styles(color, *styles)
-        print(styled_msg + msg + PrettyPrint.RESET)
+        styled_msg = ''.join(styles) + color + msg + PrettyPrint.RESET
+        print(styled_msg)
 
 ########################
 ##  BINARY OPERATIONS ##
