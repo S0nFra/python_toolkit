@@ -34,7 +34,7 @@ def save_obj(filename, obj, overwrite=True):
     """
     # Ensure the directory exists
     directory = os.path.dirname(filename)
-    if not os.path.exists(directory):
+    if os.path.isdir(directory) and not os.path.exists(directory):
         os.makedirs(directory)
     
     if not overwrite:
