@@ -20,7 +20,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 def find_brute(T, P):
-  """Return the lowest index of T at which substring P begins (or else -1)."""
+  """
+    Implements the brute-force string matching algorithm.
+
+    This function searches for the first occurrence of pattern P within text T
+    using a simple brute-force approach. It checks every possible starting position
+    in T for a match with P.
+
+    Args:
+    T (str): The text string to search within.
+    P (str): The pattern string to search for.
+
+    Returns:
+    int: The starting index of the first occurrence of P in T,
+         or -1 if P is not found in T.
+
+    Time Complexity: O(nm), where n is the length of T and m is the length of P.
+    Space Complexity: O(1), as it uses only a constant amount of extra space.
+  """
   n, m = len(T), len(P)                      # introduce convenient notations
   for i in range(n-m+1):                     # try every potential starting index within T
     k = 0                                    # an index into pattern P

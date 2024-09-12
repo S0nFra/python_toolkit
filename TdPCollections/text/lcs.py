@@ -20,7 +20,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 def LCS(X, Y):
-  """Return table such that L[j][k] is length of LCS for X[0:j] and Y[0:k]."""
+  """
+    Computes the Longest Common Subsequence (LCS) table for two strings.
+
+    This function uses dynamic programming to build a table where L[j][k] represents
+    the length of the LCS for the prefixes X[0:j] and Y[0:k].
+
+    Args:
+    X (str): The first input string.
+    Y (str): The second input string.
+
+    Returns:
+    list of lists: A 2D table where L[j][k] is the length of the LCS for X[0:j] and Y[0:k].
+
+    Time Complexity: O(nm), where n is the length of X and m is the length of Y.
+    Space Complexity: O(nm) for the LCS table.
+  """
   n, m = len(X), len(Y)                      # introduce convenient notations
   L = [[0] * (m+1) for k in range(n+1)]      # (n+1) x (m+1) table
   for j in range(n):
@@ -32,7 +47,23 @@ def LCS(X, Y):
   return L
 
 def LCS_solution(X, Y, L):
-  """Return the longest common substring of X and Y, given LCS table L."""
+  """
+    Reconstructs the Longest Common Subsequence (LCS) from the LCS table.
+
+    This function backtracks through the LCS table to construct the actual
+    longest common subsequence of X and Y.
+
+    Args:
+    X (str): The first input string.
+    Y (str): The second input string.
+    L (list of lists): The LCS table computed by the LCS function.
+
+    Returns:
+    str: The longest common subsequence of X and Y.
+
+    Time Complexity: O(n + m), where n is the length of X and m is the length of Y.
+    Space Complexity: O(n + m) in the worst case for the reconstructed subsequence.
+  """
   solution = []
   j,k = len(X), len(Y)
   while L[j][k] > 0:                   # common characters remain

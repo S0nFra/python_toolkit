@@ -20,7 +20,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 def find_kmp(T, P):
-  """Return the lowest index of T at which substring P begins (or else -1)."""
+  """
+    Implements the Knuth-Morris-Pratt (KMP) string matching algorithm.
+
+    This function efficiently searches for the first occurrence of pattern P within text T
+    using the KMP algorithm. It utilizes a failure function to skip unnecessary comparisons.
+
+    Args:
+    T (str): The text string to search within.
+    P (str): The pattern string to search for.
+
+    Returns:
+    int: The starting index of the first occurrence of P in T,
+         or -1 if P is not found in T.
+
+    Time Complexity: O(n + m), where n is the length of T and m is the length of P.
+    Space Complexity: O(m) for the failure function.
+  """
   n, m = len(T), len(P)            # introduce convenient notations
   if m == 0: return 0              # trivial search for empty string
   fail = compute_kmp_fail(P)       # rely on utility to precompute
@@ -39,7 +55,23 @@ def find_kmp(T, P):
   return -1                        # reached end without match
 
 def compute_kmp_fail(P):
-  """Utility that computes and returns KMP 'fail' list."""
+  """
+    Computes the failure function for the KMP algorithm.
+
+    This function pre-processes the pattern P to create a failure function,
+    which is used to determine how much to shift the pattern when a mismatch occurs.
+
+    Args:
+    P (str): The pattern string to compute the failure function for.
+
+    Returns:
+    list: A list representing the failure function for P.
+
+    Time Complexity: O(m), where m is the length of P.
+    Space Complexity: O(m) for the failure function.
+
+    Note: This is an internal utility function used by find_kmp.
+  """
   m = len(P)
   fail = [0] * m                   # by default, presume overlap of 0 everywhere
   j = 1
