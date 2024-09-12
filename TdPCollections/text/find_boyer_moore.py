@@ -20,12 +20,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 def find_boyer_moore(T, P):
-  """Return the lowest index of T at which substring P begins (or else -1)."""
+  """
+    Implementation of the Boyer-Moore string search algorithm.
+    
+    Args:
+    T (str): Text in which to search.
+    P (str): Pattern to search for.
+    
+    Returns:
+    int: The starting index of the first occurrence of P in T, or -1 if P is not found.
+    """
   n, m = len(T), len(P)                   # introduce convenient notations
   if m == 0: return 0                     # trivial search for empty string
+  
   last = {}                               # build 'last' dictionary
   for k in range(m):
     last[ P[k] ] = k                      # later occurrence overwrites
+  
   # align end of pattern at index m-1 of text
   i = m-1                                 # an index into T
   k = m-1                                 # an index into P

@@ -1,40 +1,6 @@
 import numpy as np
 import argparse
 
-def BoyerMoore(T, P):
-    """
-    Implementation of the Boyer-Moore string search algorithm.
-    
-    Args:
-    T (str): Text in which to search.
-    P (str): Pattern to search for.
-    
-    Returns:
-    int: The starting index of the first occurrence of P in T, or -1 if P is not found.
-    """
-    n, m = len(T), len(P)
-    if m == 0: return 0  # If pattern is empty, it's found at the start.
-
-    # Create the last occurrence table for the pattern.
-    last_occurance = dict()
-    for k in range(m):
-        last_occurance[P[k]] = k
-
-    i = m - 1  # Pointer in the text.
-    k = m - 1  # Pointer in the pattern.
-    while i < n:
-        if T[i] == P[k]:  # Characters match.
-            if k == 0:
-                return i  # Found the pattern.
-            else:
-                i -= 1
-                k -= 1
-        else:
-            j = last_occurance.get(T[i], -1)  # Last occurrence of T[i] in the pattern.
-            i = i + m - min(k, j + 1)  # Shift the pattern.
-            k = m - 1  # Reset pattern pointer.
-    return -1  # Pattern not found.
-
 def levenshtein_dist(src: str, trg: str, del_cost=1, ins_cost=1, sub_cost=2, pre_process=str.lower):
     """
     Computes the Levenshtein distance between two strings.
@@ -110,43 +76,7 @@ def smart_search(s, target, th=0.3):
         res = similarity(e, target)
         if res[0] >= th:
             print(f"{res[0]:.3f}", ":", e)
-
-def _test(conf={"del_cost": 1, "ins_cost": 1, "sub_cost": 1}):
-    """
-    Runs a series of tests to verify the implementation of the Levenshtein distance function.
-    
-    Args:
-    conf (dict): Configuration for deletion, insertion, and substitution costs.
-    """
-    print("conf:", conf)
-    
-    print(">>> FIRST TEST SET <<<")
-    A = ["helo", "algorithm", "kitten", "gate", "winter", "INTENTION", "pero", "paolo", "casa", "Channel1", "Stanby"]
-    B = ["hello", "rhythm", "sitting", "goat", "writers", "EXECUTION", "melo", "parlo", "cassa", "CH1", "STBY"]
-    res = []
-    
-    for i in range(len(A)):
-        edit_dist, _ = levenshtein_dist(A[i], B[i], **conf)
-        print("Levenshtein Distance between \"{}\" and \"{}\" = {}".format(A[i], B[i], edit_dist))
-        res.append(edit_dist)
-    print(res, "\n")
-    
-    print(">>> SECOND TEST SET <<<")
-    tests = [
-        ("winter", "writers", 3),
-        ("INTENTION", "EXECUTION", 5),
-        ("paolo", "parlo", 1),
-        ("casa", "cassa", 1),
-        ("pero", "melo", 2)
-    ]
-    
-    for test in tests:
-        src, trg, res = test
-        pred, _ = levenshtein_dist(src, trg, **conf)
-        assert pred == res, f"src:\"{src}\" trg:\"{trg}\" expected {res} obtained {pred}"
-    
-    print(">>> TEST END <<<")
-
+            
 if __name__ == '__main__':
     def get_param() -> argparse.Namespace:
         """
