@@ -100,6 +100,66 @@ class PrettyPrint:
         styled_msg = ''.join(styles) + color + msg + PrettyPrint.RESET
         print(styled_msg)
 
+##############################
+##  HUMAN SORTING FUNCTIONS ##
+##############################
+
+"""
+Following are provides functions for implementing "human" or "natural" sorting,
+which is a way of sorting strings containing numbers in a way that makes sense to humans.
+
+For example, sorting ["file1", "file10", "file2"] would result in ["file1", "file2", "file10"]
+instead of ["file1", "file10", "file2"] (which would be the result of standard string sorting).
+
+Source: https://stackoverflow.com/questions/5967500/how-to-correctly-sort-a-string-with-a-number-inside
+
+Example usage:
+    alist = [
+        "something1",
+        "something12",
+        "something17",
+        "something2",
+        "something25",
+        "something29"
+    ]
+
+    alist.sort(key=natural_keys)
+    print(alist)
+    
+    # Output: ['something1', 'something2', 'something12', 'something17', 'something25', 'something29']
+"""
+
+import re
+
+def atoi(text):
+    """
+    Convert a string to an integer if possible, otherwise return the string.
+    
+    Args:
+        text (str): The input string to convert.
+    
+    Returns:
+        int or str: The converted integer if the input is a digit, otherwise the original string.
+    """
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    """
+    Generate a key for sorting strings in a "human" or "natural" order.
+    
+    This function splits the input string into chunks of strings and numbers,
+    then converts the number chunks to integers. This allows for sorting that
+    takes into account the numerical value of embedded numbers.
+    
+    Args:
+        text (str): The input string to generate a sorting key for.
+    
+    Returns:
+        list: A list of strings and integers to be used as a sorting key.
+    """
+    return [atoi(c) for c in re.split(r'(\d+)', text)]
+
+
 ########################
 ##  BINARY OPERATIONS ##
 ########################
