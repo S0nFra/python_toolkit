@@ -67,6 +67,12 @@ def load_obj(filename):
         obj = pickle.load(file)
     return obj
 
+import platform
+if platform.system() == "Windows":
+    # Using Colorama to get ANSI escapes to work on Windows. Useful for PrettyPrint
+    from colorama import just_fix_windows_console
+    just_fix_windows_console()
+
 class PrettyPrint:
     """
     Helper class for terminal output styling.
