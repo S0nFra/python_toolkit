@@ -39,6 +39,7 @@ class LinkedBinaryTree(BinaryTree):
   class Position(BinaryTree.Position):
     """An abstraction representing the location of a single element."""
 
+    __slots__ = '_container', '_node'
     def __init__(self, container, node):
       """Constructor should not be invoked by user."""
       self._container = container
