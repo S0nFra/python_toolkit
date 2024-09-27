@@ -109,7 +109,7 @@ class LinkedBinaryTree(BinaryTree):
     return count
 
   #-------------------------- nonpublic mutators --------------------------
-  def _add_root(self, e):
+  def add_root(self, e):
     """Place element e at the root of an empty tree and return new Position.
 
     Raise ValueError if tree nonempty.
@@ -120,7 +120,7 @@ class LinkedBinaryTree(BinaryTree):
     self._root = self._Node(e)
     return self._make_position(self._root)
 
-  def _add_left(self, p, e):
+  def add_left(self, p, e):
     """Create a new left child for Position p, storing element e.
 
     Return the Position of new node.
@@ -133,7 +133,7 @@ class LinkedBinaryTree(BinaryTree):
     node._left = self._Node(e, node)                  # node is its parent
     return self._make_position(node._left)
 
-  def _add_right(self, p, e):
+  def add_right(self, p, e):
     """Create a new right child for Position p, storing element e.
 
     Return the Position of new node.
@@ -146,14 +146,14 @@ class LinkedBinaryTree(BinaryTree):
     node._right = self._Node(e, node)                 # node is its parent
     return self._make_position(node._right)
 
-  def _replace(self, p, e):
+  def replace(self, p, e):
     """Replace the element at position p with e, and return old element."""
     node = self._validate(p)
     old = node._element
     node._element = e
     return old
 
-  def _delete(self, p):
+  def delete(self, p):
     """Delete the node at Position p, and replace it with its child, if any.
 
     Return the element that had been stored at Position p.
@@ -177,7 +177,7 @@ class LinkedBinaryTree(BinaryTree):
     node._parent = node              # convention for deprecated node
     return node._element
 
-  def _attach(self, p, t1, t2):
+  def attach(self, p, t1, t2):
     """Attach trees t1 and t2, respectively, as the left and right subtrees of the external Position p.
 
     As a side effect, set t1 and t2 to empty.

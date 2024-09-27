@@ -19,62 +19,92 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from abc import abstractmethod
 from .tree import Tree
 
 class BinaryTree(Tree):
-  """Abstract base class representing a binary alberi structure."""
+    """Abstract base class representing a binary tree structure."""
 
-  # --------------------- additional abstract methods ---------------------
-  def left(self, p):
-    """Return a Position representing p's left child.
+    # --------------------- nested Position class ---------------------
+    class Position(Tree.Position):
+        """An abstraction representing the location of a single element."""
+        __slots__ = '_container', '_node'  # streamline memory usage
 
-    Return None if p does not have a left child.
-    """
-    raise NotImplementedError('must be implemented by subclass')
+        def __init__(self, container, node):
+            """Constructor should not be invoked by user."""
+            self._container = container
+            self._node = node
 
-  def right(self, p):
-    """Return a Position representing p's right child.
+        def element(self):
+            """Return the element stored at this Position."""
+            return self._node._element
 
-    Return None if p does not have a right child.
-    """
-    raise NotImplementedError('must be implemented by subclass')
+        def __eq__(self, other):
+            """Return True if other is a Position representing the same location."""
+            return type(other) is type(self) and other._node is self._node
 
-  # ---------- concrete methods implemented in this class ----------
-  def sibling(self, p):
-    """Return a Position representing p's sibling (or None if no sibling)."""
-    parent = self.parent(p)
-    if parent is None:                    # p must be the root
-      return None                         # root has no sibling
-    else:
-      if p == self.left(parent):
-        return self.right(parent)         # possibly None
-      else:
-        return self.left(parent)          # possibly None
+    # --------------------- abstract methods ---------------------
+    @abstractmethod
+    def left(self, p):
+        """Return a Position representing p's left child.
 
-  def children(self, p):
-    """Generate an iteration of Positions representing p's children."""
-    if self.left(p) is not None:
-      yield self.left(p)
-    if self.right(p) is not None:
-      yield self.right(p)
+        Return None if p does not have a left child.
+        """
+        pass
 
-  def inorder(self):
-    """Generate an inorder iteration of positions in the alberi."""
-    if not self.is_empty():
-      for p in self._subtree_inorder(self.root()):
-        yield p
+    @abstractmethod
+    def right(self, p):
+        """Return a Position representing p's right child.
 
-  def _subtree_inorder(self, p):
-    """Generate an inorder iteration of positions in subtree rooted at p."""
-    if self.left(p) is not None:          # if left child exists, traverse its subtree
-      for other in self._subtree_inorder(self.left(p)):
-        yield other
-    yield p                               # visit p between its subtrees
-    if self.right(p) is not None:         # if right child exists, traverse its subtree
-      for other in self._subtree_inorder(self.right(p)):
-        yield other
+        Return None if p does not have a right child.
+        """
+        pass
 
-  # override inherited version to make inorder the default
-  def positions(self):
-    """Generate an iteration of the alberi's positions."""
-    return self.inorder()                 # make inorder the default
+    # ---------- concrete methods implemented in this class ----------
+    def sibling(self, p):
+        """Return a Position representing p's sibling (or None if no sibling)."""
+        parent = self.parent(p)
+        if parent is None:                    # p must be the root
+            return None                         # root has no sibling
+        else:
+            if p == self.left(parent):
+                return self.right(parent)         # possibly None
+            else:
+                return self.left(parent)          # possibly None
+
+    def children(self, p):
+        """Generate an iteration of Positions representing p's children."""
+        if self.left(p) is not None:
+            yield self.left(p)
+        if self.right(p) is not None:
+            yield self.right(p)
+
+    def inorder(self):
+        """Generate an inorder iteration of positions in the tree."""
+        if not self.is_empty():
+            for p in self._subtree_inorder(self.root()):
+                yield p
+
+    def _subtree_inorder(self, p):
+        """Generate an inorder iteration of positions in subtree rooted at p."""
+        if self.left(p) is not None:          # if left child exists, traverse its subtree
+            for other in self._subtree_inorder(self.left(p)):
+                yield other
+        yield p                               # visit p between its subtrees
+        if self.right(p) is not None:         # if right child exists, traverse its subtree
+            for other in self._subtree_inorder(self.right(p)):
+                yield other
+
+  	# override inherited version to make inorder the default
+    def positions(self):
+        """Generate an iteration of the tree's positions."""
+        return self.inorder()                 # make inorder the default
+
+    def num_children(self, p):
+        """Return the number of children of Position p."""
+        count = 0
+        if self.left(p) is not None:    # left child exists
+            count += 1
+        if self.right(p) is not None:   # right child exists
+            count += 1
+        return count
